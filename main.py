@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from skeleton import *
 import math
 
 # -----------
@@ -26,6 +27,9 @@ phi = 0.
 center_x = 0
 center_y = 0
 center_z = 0
+
+# global variable
+skeleton = None
 
 # -------------------
 # SCENE CONSTRUCTOR
@@ -122,6 +126,12 @@ def motion(x, y):
     glutPostRedisplay()
 
 
+def init_skeleton():
+    global skeleton
+    xml_file = "data/my_humanoid.xml"
+    skeleton = Skeleton(xml_file)
+
+
 # ------
 # MAIN
 # ------
@@ -134,6 +144,8 @@ if __name__ == "__main__":
     glutCreateWindow("Mujoco Modeler")
     # Initialize OpenGL graphics state
     init()
+    # set up skeleton
+    init_skeleton()
     # Register callbacks
     glutReshapeFunc(reshape)
     glutDisplayFunc(display)
