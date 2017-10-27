@@ -20,44 +20,44 @@
       <joint armature="0" damping="0" limited="false" name="root" pos="0.0000 -0.0000 0.0000" stiffness="0" type="free"/>
       <!--<geom pos="0.0000 -0.0000 0.0000" size="0.03" type="sphere"/>-->
       <body end="0.0963 -0.0494 -0.0918" name="lhipjoint">
-        <geom fromto="0.0136 -0.0070 -0.0129 0.0827 -0.0425 -0.0789" size="0.0300" type="capsule"/>
+        <geom fromto="0.0136 -0.0070 -0.0129 0.0827 -0.0425 -0.0789" size="0.03" type="capsule"/>
         <body end="0.2274 -0.0494 -0.4521" name="lfemur">
           <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="lfemur_z" pos="0.0963 -0.0494 -0.0918" range="-60.0000 70.0000" stiffness="10" type="hinge"/>
           <joint armature="0.01" axis="-0.3420 -0.0000 0.9397" damping="5" limited="true" name="lfemur_y" pos="0.0963 -0.0494 -0.0918" range="-70.0000 70.0000" stiffness="10" type="hinge"/>
           <joint armature="0.01" axis="0.9397 0.0000 0.3420" damping="5" limited="true" name="lfemur_x" pos="0.0963 -0.0494 -0.0918" range="-160.0000 20.0000" stiffness="10" type="hinge"/>
-          <geom fromto="0.1031 -0.0494 -0.1106 0.2206 -0.0494 -0.4333" size="0.0300" type="capsule"/>
+          <geom fromto="0.1031 -0.0494 -0.1106 0.2206 -0.0494 -0.4333" size="0.03" type="capsule"/>
           <body end="0.3657 -0.0494 -0.8321" name="ltibia">
             <joint armature="0.01" axis="0.9397 0.0000 0.3420" damping="5" limited="true" name="ltibia_x" pos="0.2274 -0.0494 -0.4521" range="-10.0000 170.0000" stiffness="10" type="hinge"/>
-            <geom fromto="0.2343 -0.0494 -0.4709 0.3589 -0.0494 -0.8133" size="0.0300" type="capsule"/>
+            <geom fromto="0.2343 -0.0494 -0.4709 0.3589 -0.0494 -0.8133" size="0.03" type="capsule"/>
             <body end="0.3731 -0.1606 -0.8523" name="lfoot">
               <joint armature="0.01" axis="-0.3420 -0.0000 0.9397" damping="5" limited="true" name="lfoot_z" pos="0.3657 -0.0494 -0.8321" range="-70.0000 20.0000" stiffness="10" type="hinge"/>
               <joint armature="0.01" axis="0.9397 0.0000 0.3420" damping="5" limited="true" name="lfoot_x" pos="0.3657 -0.0494 -0.8321" range="-45.0000 90.0000" stiffness="10" type="hinge"/>
-              <geom fromto="0.3670 -0.0691 -0.8356 0.3718 -0.1410 -0.8487" size="0.0300" type="capsule"/>
+              <geom fromto="0.3670 -0.0691 -0.8356 0.3718 -0.1410 -0.8487" size="0.03" type="capsule"/>
               <body end="0.3731 -0.2178 -0.8523" name="ltoes">
                 <joint armature="0.01" axis="0.9397 0.0000 0.3420" damping="5" limited="true" name="ltoes_x" pos="0.3731 -0.1606 -0.8523" range="-90.0000 20.0000" stiffness="10" type="hinge"/>
-                <geom fromto="0.3731 -0.1806 -0.8523 0.3731 -0.1978 -0.8523" size="0.0300" type="capsule"/>
+                <geom fromto="0.3731 -0.1806 -0.8523 0.3731 -0.1978 -0.8523" size="0.03" type="capsule"/>
               </body>
             </body>
           </body>
         </body>
       </body>
       <body end="-0.1019 -0.0494 -0.0918" name="rhipjoint">
-        <geom fromto="-0.0140 -0.0068 -0.0126 -0.0880 -0.0427 -0.0792" size="0.0300" type="capsule"/>
+        <geom fromto="-0.0140 -0.0068 -0.0126 -0.0880 -0.0427 -0.0792" size="0.03" type="capsule"/>
         <body end="-0.2404 -0.0494 -0.4723" name="rfemur">
           <joint armature="0.01" axis="0.0000 -1.0000 -0.0000" damping="5" limited="true" name="rfemur_z" pos="-0.1019 -0.0494 -0.0918" range="-70.0000 60.0000" stiffness="10" type="hinge"/>
           <joint armature="0.01" axis="0.3420 -0.0000 0.9397" damping="5" limited="true" name="rfemur_y" pos="-0.1019 -0.0494 -0.0918" range="-70.0000 70.0000" stiffness="10" type="hinge"/>
           <joint armature="0.01" axis="0.9397 0.0000 -0.3420" damping="5" limited="true" name="rfemur_x" pos="-0.1019 -0.0494 -0.0918" range="-160.0000 20.0000" stiffness="10" type="hinge"/>
-          <geom fromto="-0.1088 -0.0494 -0.1106 -0.2336 -0.0494 -0.4535" size="0.0300" type="capsule"/>
+          <geom fromto="-0.1088 -0.0494 -0.1106 -0.2336 -0.0494 -0.4535" size="0.03" type="capsule"/>
           <body end="-0.3792 -0.0494 -0.8536" name="rtibia">
             <joint armature="0.01" axis="0.9397 0.0000 -0.3420" damping="5" limited="true" name="rtibia_x" pos="-0.2404 -0.0494 -0.4723" range="-10.0000 170.0000" stiffness="10" type="hinge"/>
-            <geom fromto="-0.2473 -0.0494 -0.4911 -0.3724 -0.0494 -0.8348" size="0.0300" type="capsule"/>
+            <geom fromto="-0.2473 -0.0494 -0.4911 -0.3724 -0.0494 -0.8348" size="0.03" type="capsule"/>
             <body end="-0.3870 -0.1558 -0.8750" name="rfoot">
               <joint armature="0.01" axis="0.3420 -0.0000 0.9397" damping="5" limited="true" name="rfoot_z" pos="-0.3792 -0.0494 -0.8536" range="-20.0000 70.0000" stiffness="10" type="hinge"/>
               <joint armature="0.01" axis="0.9397 -0.0000 -0.3420" damping="5" limited="true" name="rfoot_x" pos="-0.3792 -0.0494 -0.8536" range="-45.0000 90.0000" stiffness="10" type="hinge"/>
-              <geom fromto="-0.3806 -0.0690 -0.8575 -0.3856 -0.1363 -0.8710" size="0.0300" type="capsule"/>
+              <geom fromto="-0.3806 -0.0690 -0.8575 -0.3856 -0.1363 -0.8710" size="0.03" type="capsule"/>
               <body end="-0.3870 -0.2107 -0.8750" name="rtoes">
                 <joint armature="0.01" axis="0.9397 -0.0000 -0.3420" damping="5" limited="true" name="rtoes_x" pos="-0.3870 -0.1558 -0.8750" range="-90.0000 20.0000" stiffness="10" type="hinge"/>
-                <geom fromto="-0.3870 -0.1758 -0.8750 -0.3870 -0.1907 -0.8750" size="0.0300" type="capsule"/>
+                <geom fromto="-0.3870 -0.1758 -0.8750 -0.3870 -0.1907 -0.8750" size="0.03" type="capsule"/>
               </body>
             </body>
           </body>
@@ -67,63 +67,63 @@
         <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="lowerback_z" pos="0.0000 -0.0000 0.0000" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
         <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="lowerback_y" pos="0.0000 -0.0000 0.0000" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
         <joint armature="0.01" axis="1.0000 0.0000 0.0000" damping="5" limited="true" name="lowerback_x" pos="0.0000 -0.0000 0.0000" range="-20.0000 45.0000" stiffness="10" type="hinge"/>
-        <geom fromto="-0.1012 0.0034 0.0494 0.1018 0.0046 0.0638" size="0.0380" type="capsule"/>
+        <geom fromto="0.0001 0.0014 0.0199 0.0005 0.0066 0.0933" size="0.03" type="capsule"/>
         <body end="0.0011 0.0071 0.2268" name="upperback">
           <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="upperback_z" pos="0.0006 0.0081 0.1132" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
           <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="upperback_y" pos="0.0006 0.0081 0.1132" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
           <joint armature="0.01" axis="1.0000 0.0000 0.0000" damping="5" limited="true" name="upperback_x" pos="0.0006 0.0081 0.1132" range="-20.0000 45.0000" stiffness="10" type="hinge"/>
-          <geom fromto="0.1026 0.0068 0.1696 -0.1009 0.0084 0.1704" size="0.0420" type="capsule"/>
+          <geom fromto="0.0007 0.0079 0.1332 0.0010 0.0073 0.2068" size="0.03" type="capsule"/>
           <body end="0.0010 0.0024 0.3407" name="thorax">
             <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="thorax_z" pos="0.0011 0.0071 0.2268" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
             <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="thorax_y" pos="0.0011 0.0071 0.2268" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
             <joint armature="0.01" axis="1.0000 0.0000 0.0000" damping="5" limited="true" name="thorax_x" pos="0.0011 0.0071 0.2268" range="-20.0000 45.0000" stiffness="10" type="hinge"/>
-            <geom fromto="0.0011 0.0063 0.2468 0.0010 0.0033 0.3207" size="0.0300" type="capsule"/>
+            <geom fromto="0.0011 0.0063 0.2468 0.0010 0.0033 0.3207" size="0.03" type="capsule"/>
             <body end="-0.0023 -0.0083 0.4312" name="lowerneck">
               <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="lowerneck_z" pos="0.0010 0.0024 0.3407" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
               <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="lowerneck_y" pos="0.0010 0.0024 0.3407" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
               <joint armature="0.01" axis="1.0000 0.0000 0.0000" damping="5" limited="true" name="lowerneck_x" pos="0.0010 0.0024 0.3407" range="-20.0000 45.0000" stiffness="10" type="hinge"/>
-              <geom fromto="0.0003 0.0001 0.3606 -0.0015 -0.0059 0.4114" size="0.0300" type="capsule"/>
+              <geom fromto="0.0003 0.0001 0.3606 -0.0015 -0.0059 0.4114" size="0.03" type="capsule"/>
               <body end="-0.0013 -0.0038 0.5212" name="upperneck">
                 <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="upperneck_z" pos="-0.0023 -0.0083 0.4312" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
                 <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="upperneck_y" pos="-0.0023 -0.0083 0.4312" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
                 <joint armature="0.01" axis="1.0000 0.0000 0.0000" damping="5" limited="true" name="upperneck_x" pos="-0.0023 -0.0083 0.4312" range="-20.0000 45.0000" stiffness="10" type="hinge"/>
-                <geom fromto="-0.0020 -0.0073 0.4512 -0.0015 -0.0048 0.5012" size="0.0300" type="capsule"/>
+                <geom fromto="-0.0020 -0.0073 0.4512 -0.0015 -0.0048 0.5012" size="0.03" type="capsule"/>
                 <body end="-0.0006 -0.0008 0.6176" name="head">
                   <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="head_z" pos="-0.0013 -0.0038 0.5212" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
                   <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="head_y" pos="-0.0013 -0.0038 0.5212" range="-30.0000 30.0000" stiffness="10" type="hinge"/>
                   <joint armature="0.01" axis="1.0000 0.0000 0.0000" damping="5" limited="true" name="head_x" pos="-0.0013 -0.0038 0.5212" range="-20.0000 45.0000" stiffness="10" type="hinge"/>
-                  <geom fromto="-0.0011 -0.0031 0.5412 -0.0007 -0.0014 0.5976" size="0.0300" type="capsule"/>
+                  <geom fromto="-0.0011 -0.0031 0.5412 -0.0007 -0.0014 0.5976" size="0.03" type="capsule"/>
                 </body>
               </body>
             </body>
             <body end="0.1790 -0.0149 0.4121" name="lclavicle">
               <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="lclavicle_z" pos="0.0010 0.0024 0.3407" range="0.0000 20.0000" stiffness="10" type="hinge"/>
               <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="lclavicle_y" pos="0.0010 0.0024 0.3407" range="-20.0000 10.0000" stiffness="10" type="hinge"/>
-              <geom fromto="0.0195 0.0006 0.3481 0.1605 -0.0131 0.4047" size="0.0300" type="capsule"/>
+              <geom fromto="0.0195 0.0006 0.3481 0.1605 -0.0131 0.4047" size="0.03" type="capsule"/>
               <body end="0.4599 -0.0149 0.4121" name="lhumerus">
                 <joint armature="0.01" axis="-0.0000 0.8660 -0.5000" damping="5" limited="true" name="lhumerus_z" pos="0.1790 -0.0149 0.4121" range="-90.0000 90.0000" stiffness="10" type="hinge"/>
                 <joint armature="0.01" axis="-1.0000 -0.0000 -0.0000" damping="5" limited="true" name="lhumerus_y" pos="0.1790 -0.0149 0.4121" range="-90.0000 90.0000" stiffness="10" type="hinge"/>
                 <joint armature="0.01" axis="0.0000 -0.5000 -0.8660" damping="5" limited="true" name="lhumerus_x" pos="0.1790 -0.0149 0.4121" range="-60.0000 90.0000" stiffness="10" type="hinge"/>
-                <geom fromto="0.2490 -0.0149 0.4121 0.3899 -0.0149 0.4121" size="0.0600" type="capsule"/>
+                <geom fromto="0.1990 -0.0149 0.4121 0.4399 -0.0149 0.4121" size="0.03" type="capsule"/>
                 <body end="0.6374 -0.0149 0.4121" name="lradius">
                   <joint armature="0.01" axis="0.0000 -0.5000 -0.8660" damping="5" limited="true" name="lradius_x" pos="0.4599 -0.0149 0.4121" range="-10.0000 170.0000" stiffness="10" type="hinge"/>
-                  <geom fromto="0.4799 -0.0149 0.4121 0.6174 -0.0149 0.4121" size="0.0300" type="capsule"/>
+                  <geom fromto="0.4799 -0.0149 0.4121 0.6174 -0.0149 0.4121" size="0.03" type="capsule"/>
                   <body end="0.7261 -0.0149 0.4121" name="lwrist">
                     <joint armature="0.01" axis="-1.0000 -0.0000 0.0000" damping="5" limited="true" name="lwrist_y" pos="0.6374 -0.0149 0.4121" range="-180.0000 0.0000" stiffness="10" type="hinge"/>
-                    <geom fromto="0.6574 -0.0149 0.4121 0.7061 -0.0149 0.4121" size="0.0300" type="capsule"/>
+                    <geom fromto="0.6574 -0.0149 0.4121 0.7061 -0.0149 0.4121" size="0.03" type="capsule"/>
                     <body end="0.7596 -0.0149 0.4121" name="lhand">
                       <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="lhand_z" pos="0.7261 -0.0149 0.4121" range="-45.0000 45.0000" stiffness="10" type="hinge"/>
                       <joint armature="0.01" axis="0.0000 1.0000 0.0000" damping="5" limited="true" name="lhand_x" pos="0.7261 -0.0149 0.4121" range="-90.0000 90.0000" stiffness="10" type="hinge"/>
-                      <geom fromto="0.7461 -0.0149 0.4121 0.7396 -0.0149 0.4121" size="0.0300" type="capsule"/>
+                      <geom fromto="0.7461 -0.0149 0.4121 0.7396 -0.0149 0.4121" size="0.03" type="capsule"/>
                       <body end="0.7866 -0.0149 0.4121" name="lfingers">
                         <joint armature="0.01" axis="0.0000 1.0000 0.0000" damping="5" limited="true" name="lfingers_x" pos="0.7596 -0.0149 0.4121" range="0.0000 90.0000" stiffness="10" type="hinge"/>
-                        <geom fromto="0.7796 -0.0149 0.4121 0.7666 -0.0149 0.4121" size="0.0300" type="capsule"/>
+                        <geom fromto="0.7796 -0.0149 0.4121 0.7666 -0.0149 0.4121" size="0.03" type="capsule"/>
                       </body>
                     </body>
                     <body end="0.7535 -0.0423 0.4121" name="lthumb">
                       <joint armature="0.01" axis="-0.0000 -0.0000 1.0000" damping="5" limited="true" name="lthumb_z" pos="0.7261 -0.0149 0.4121" range="-45.0000 45.0000" stiffness="10" type="hinge"/>
                       <joint armature="0.01" axis="0.7071 0.7071 0.0000" damping="5" limited="true" name="lthumb_x" pos="0.7261 -0.0149 0.4121" range="-45.0000 45.0000" stiffness="10" type="hinge"/>
-                      <geom fromto="0.7403 -0.0290 0.4121 0.7394 -0.0282 0.4121" size="0.0300" type="capsule"/>
+                      <geom fromto="0.7403 -0.0290 0.4121 0.7394 -0.0282 0.4121" size="0.03" type="capsule"/>
                     </body>
                   </body>
                 </body>
@@ -132,31 +132,31 @@
             <body end="-0.1827 -0.0083 0.4172" name="rclavicle">
               <joint armature="0.01" axis="0.0000 -1.0000 0.0000" damping="5" limited="true" name="rclavicle_z" pos="0.0010 0.0024 0.3407" range="-20.0000 0.0000" stiffness="10" type="hinge"/>
               <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="rclavicle_y" pos="0.0010 0.0024 0.3407" range="-10.0000 20.0000" stiffness="10" type="hinge"/>
-              <geom fromto="-0.0174 0.0014 0.3484 -0.1643 -0.0072 0.4096" size="0.0300" type="capsule"/>
+              <geom fromto="-0.0174 0.0014 0.3484 -0.1643 -0.0072 0.4096" size="0.03" type="capsule"/>
               <body end="-0.4596 -0.0083 0.4172" name="rhumerus">
                 <joint armature="0.01" axis="0.0000 0.8660 -0.5000" damping="5" limited="true" name="rhumerus_z" pos="-0.1827 -0.0083 0.4172" range="-90.0000 90.0000" stiffness="10" type="hinge"/>
                 <joint armature="0.01" axis="1.0000 -0.0000 -0.0000" damping="5" limited="true" name="rhumerus_y" pos="-0.1827 -0.0083 0.4172" range="-90.0000 90.0000" stiffness="10" type="hinge"/>
                 <joint armature="0.01" axis="0.0000 0.5000 0.8660" damping="5" limited="true" name="rhumerus_x" pos="-0.1827 -0.0083 0.4172" range="-90.0000 60.0000" stiffness="10" type="hinge"/>
-                <geom fromto="-0.2027 -0.0083 0.4172 -0.4396 -0.0083 0.4172" size="0.0300" type="capsule"/>
+                <geom fromto="-0.2027 -0.0083 0.4172 -0.4396 -0.0083 0.4172" size="0.03" type="capsule"/>
                 <body end="-0.6411 -0.0083 0.4173" name="rradius">
                   <joint armature="0.01" axis="0.0000 0.5000 0.8660" damping="5" limited="true" name="rradius_x" pos="-0.4596 -0.0083 0.4172" range="-10.0000 170.0000" stiffness="10" type="hinge"/>
-                  <geom fromto="-0.4796 -0.0083 0.4172 -0.6211 -0.0083 0.4173" size="0.0300" type="capsule"/>
+                  <geom fromto="-0.4796 -0.0083 0.4172 -0.6211 -0.0083 0.4173" size="0.03" type="capsule"/>
                   <body end="-0.7319 -0.0083 0.4173" name="rwrist">
                     <joint armature="0.01" axis="1.0000 -0.0000 0.0000" damping="5" limited="true" name="rwrist_y" pos="-0.6411 -0.0083 0.4173" range="-180.0000 0.0000" stiffness="10" type="hinge"/>
-                    <geom fromto="-0.6611 -0.0083 0.4173 -0.7119 -0.0083 0.4173" size="0.0300" type="capsule"/>
+                    <geom fromto="-0.6611 -0.0083 0.4173 -0.7119 -0.0083 0.4173" size="0.03" type="capsule"/>
                     <body end="-0.7671 -0.0083 0.4173" name="rhand">
                       <joint armature="0.01" axis="-0.0000 -0.0000 1.0000" damping="5" limited="true" name="rhand_z" pos="-0.7319 -0.0083 0.4173" range="-45.0000 45.0000" stiffness="10" type="hinge"/>
                       <joint armature="0.01" axis="0.0000 -1.0000 -0.0000" damping="5" limited="true" name="rhand_x" pos="-0.7319 -0.0083 0.4173" range="-90.0000 90.0000" stiffness="10" type="hinge"/>
-                      <geom fromto="-0.7519 -0.0083 0.4173 -0.7471 -0.0083 0.4173" size="0.0300" type="capsule"/>
+                      <geom fromto="-0.7519 -0.0083 0.4173 -0.7471 -0.0083 0.4173" size="0.03" type="capsule"/>
                       <body end="-0.7954 -0.0083 0.4173" name="rfingers">
                         <joint armature="0.01" axis="0.0000 -1.0000 -0.0000" damping="5" limited="true" name="rfingers_x" pos="-0.7671 -0.0083 0.4173" range="0.0000 90.0000" stiffness="10" type="hinge"/>
-                        <geom fromto="-0.7871 -0.0083 0.4173 -0.7754 -0.0083 0.4173" size="0.0300" type="capsule"/>
+                        <geom fromto="-0.7871 -0.0083 0.4173 -0.7754 -0.0083 0.4173" size="0.03" type="capsule"/>
                       </body>
                     </body>
                     <body end="-0.7607 -0.0371 0.4173" name="rthumb">
                       <joint armature="0.01" axis="0.0000 -0.0000 1.0000" damping="5" limited="true" name="rthumb_z" pos="-0.7319 -0.0083 0.4173" range="-45.0000 45.0000" stiffness="10" type="hinge"/>
                       <joint armature="0.01" axis="0.7071 -0.7071 -0.0000" damping="5" limited="true" name="rthumb_x" pos="-0.7319 -0.0083 0.4173" range="-45.0000 45.0000" stiffness="10" type="hinge"/>
-                      <geom fromto="-0.7460 -0.0224 0.4173 -0.7465 -0.0229 0.4173" size="0.0300" type="capsule"/>
+                      <geom fromto="-0.7460 -0.0224 0.4173 -0.7465 -0.0229 0.4173" size="0.03" type="capsule"/>
                     </body>
                   </body>
                 </body>

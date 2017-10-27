@@ -1,18 +1,19 @@
-from OpenGL.GL import *
-from OpenGL.GLU import *
 from OpenGL.GLUT import *
-from skeleton import *
+from skeleton import Skeleton
+from renderer import Renderer
+from utils import *
 import math
+
 
 # -----------
 # VARIABLES
 # -----------
 
 g_fViewDistance = 9.
-g_Width = 600
-g_Height = 600
+g_Width = 800
+g_Height = 800
 
-g_nearPlane = 1.
+g_nearPlane = 0.01
 g_farPlane = 1000.
 
 g_button = None
@@ -20,16 +21,21 @@ x_start = 0
 y_start = 0
 
 # camera parameters
-zoom = 20.
+zoom = 12.
 up = 1.
-theta = 90.
+theta = -90.
 phi = 0.
 center_x = 0
 center_y = 0
 center_z = 0
 
+axis_x = np.array([1.0, 0.0, 0.0])
+axis_y = np.array([0.0, 1.0, 0.0])
+axis_z = np.array([0.0, 0.0, 1.0])
+
 # global variable
 skeleton = None
+renderer = Renderer()
 
 # -------------------
 # SCENE CONSTRUCTOR
@@ -37,8 +43,8 @@ skeleton = None
 
 
 def draw_scene():
-    glutSolidTeapot(1.)
-
+    skeleton.render()
+    glColor3d(1, 0, 0)
 
 # --------
 # VIEWER
@@ -46,6 +52,8 @@ def draw_scene():
 
 
 def init():
+    glClearColor(1.0, 1.0, 1.0, 1.0)
+    # lighting
     glEnable(GL_NORMALIZE)
     glLightfv(GL_LIGHT0, GL_POSITION, [.0, 10.0, 10., 0.])
     glLightfv(GL_LIGHT0, GL_AMBIENT, [.0, .0, .0, 1.0])
@@ -53,9 +61,16 @@ def init():
     glLightfv(GL_LIGHT0, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
     glEnable(GL_LIGHT0)
     glEnable(GL_LIGHTING)
+    glEnable(GL_COLOR_MATERIAL)
+    # blending
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    # misc
     glEnable(GL_DEPTH_TEST)
     glDepthFunc(GL_LESS)
     glShadeModel(GL_SMOOTH)
+    glEnable(GL_CULL_FACE)
+    glCullFace(GL_BACK)
 
 
 def display():
@@ -72,9 +87,9 @@ def update_cam():
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
     gluLookAt(zoom * math.cos(math.radians(phi)) * math.cos(math.radians(theta)) + center_x,
-              zoom * math.sin(math.radians(phi)) + center_y,
-              zoom * math.cos(math.radians(phi)) * math.sin(math.radians(theta)) + center_z, center_x, center_y,
-              center_z, 0.0, up, 0.0)
+              zoom * math.cos(math.radians(phi)) * math.sin(math.radians(theta)) + center_y,
+              zoom * math.sin(math.radians(phi)) + center_z, center_x, center_y,
+              center_z, 0.0, 0.0, up)
 
 
 def reshape(width, height):
@@ -89,8 +104,47 @@ def reshape(width, height):
 
 
 def keyboard(key, x, y):
-    if key == 'q':
+    key = key.decode()
+    geom = skeleton.picked_geom
+    if key == '`':
         exit(0)
+    elif key == 'v':
+        skeleton.save_to_xml('data/my_humanoid.xml')
+    elif key == 'a':
+        if geom is not None and geom.type == 'capsule':
+            geom.rotate(axis_y, math.radians(10))
+    elif key == 'd':
+        if geom is not None and geom.type == 'capsule':
+            geom.rotate(axis_y, math.radians(-10))
+    elif key == 'w':
+        if geom is not None and geom.type == 'capsule':
+            geom.rotate(axis_x, math.radians(10))
+    elif key == 's':
+        if geom is not None and geom.type == 'capsule':
+            geom.rotate(axis_x, math.radians(-10))
+    elif key == 'q':
+        if geom is not None and geom.type == 'capsule':
+            geom.rotate(axis_z, math.radians(10))
+    elif key == 'e':
+        if geom is not None and geom.type == 'capsule':
+            geom.rotate(axis_z, math.radians(-10))
+    glutPostRedisplay()
+
+
+def special(key, x, y):
+    geom = skeleton.picked_geom
+    if key == GLUT_KEY_UP:
+        if geom is not None and geom.type == 'capsule':
+            geom.r += 0.001
+    elif key == GLUT_KEY_DOWN:
+        if geom is not None and geom.type == 'capsule':
+            geom.r -= 0.001
+    elif key == GLUT_KEY_RIGHT:
+        if geom is not None and geom.type == 'capsule':
+            geom.lengthen(0.005)
+    elif key == GLUT_KEY_LEFT:
+        if geom is not None and geom.type == 'capsule':
+            geom.lengthen(-0.005)
     glutPostRedisplay()
 
 
@@ -100,6 +154,11 @@ def mouse(button, state, x, y):
         g_button = button
         x_start = x
         y_start = y
+
+        if button == GLUT_RIGHT_BUTTON:
+            mouse_ray = get_ray_from_screen(x, y)
+            skeleton.pick_geom(mouse_ray)
+            glutPostRedisplay()
 
 
 def motion(x, y):
@@ -140,7 +199,7 @@ if __name__ == "__main__":
     glutInit()
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)  # zBuffer
     glutInitWindowSize(g_Width, g_Height)
-    glutInitWindowPosition(0 + 4, int(g_Height/4))
+    glutInitWindowPosition(200, 0)
     glutCreateWindow("Mujoco Modeler")
     # Initialize OpenGL graphics state
     init()
@@ -152,5 +211,6 @@ if __name__ == "__main__":
     glutMouseFunc(mouse)
     glutMotionFunc(motion)
     glutKeyboardFunc(keyboard)
+    glutSpecialFunc(special)
     # Turn the flow of control over to GLUT
     glutMainLoop()
