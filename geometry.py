@@ -1,6 +1,8 @@
 from renderer import Renderer
 from common import *
-from transformation import rotation_matrix
+from lxml.etree import Element
+from transformation import rotation_matrix, quaternion_matrix, quaternion_about_axis, quaternion_multiply, quaternion_inverse
+from OpenGL.GL import *
 import math
 
 renderer = Renderer()
@@ -8,13 +10,22 @@ renderer = Renderer()
 
 class Capsule:
 
-    def __init__(self, node):
-        from_to = np.fromstring(node.attrib['fromto'], sep=' ')
-        self.p1 = from_to[:3]
-        self.p2 = from_to[3:]
-        self.r = float(node.attrib['size'])
-        self.node = node
+    def __init__(self, p1, p2, r, node=None):
+        self.p1 = p1
+        self.p2 = p2
+        self.r = r
         self.type = 'capsule'
+        if node is None:
+            self.node = Element('geom')
+            self.sync_node()
+        else:
+            self.node = node
+
+    @classmethod
+    def from_node(cls, node):
+        from_to = np.fromstring(node.attrib['fromto'], sep=' ')
+        geom = cls(from_to[:3], from_to[3:], float(node.attrib['size']), node)
+        return geom
 
     def render(self):
         renderer.render_capsule(self.p1, self.p2, self.r)
@@ -35,9 +46,64 @@ class Capsule:
         self.p1 = mid + e
         self.p2 = mid - e
 
+    def move(self, delta):
+        self.p1 += delta
+        self.p2 += delta
+
     def sync_node(self):
         self.node.attrib['fromto'] = '{:.4f} {:.4f} {:.4f} {:.4f} {:.4f} {:.4f}'.format(*np.hstack([self.p1, self.p2]))
         self.node.attrib['size'] = '{:.4f}'.format(self.r)
+        self.node.attrib['type'] = self.type
+
+
+class Ellipsoid:
+    def __init__(self, pos, size, quat=np.array([1, 0, 0, 0]), node=None):
+        self.pos = pos
+        self.size = size
+        self.quat = quat
+        self.type = 'ellipsoid'
+        if node is None:
+            self.node = Element('geom')
+            self.sync_node()
+        else:
+            self.node = node
+
+    @classmethod
+    def from_node(cls, node):
+        pos = np.fromstring(node.attrib['pos'], sep=' ')
+        size = np.fromstring(node.attrib['size'], sep=' ')
+        if 'quat' in node.attrib:
+            quat = np.fromstring(node.attrib['quat'], sep=' ')
+        else:
+            quat = np.array([1, 0, 0, 0])
+        geom = cls(pos, size, quat, node)
+        return geom
+
+    def render(self):
+        glPushMatrix()
+        glTranslated(*self.pos)
+        glMultMatrixd(quaternion_matrix(self.quat))
+        glScaled(*self.size)
+        renderer.render_point(np.zeros(3,), 1)
+        glPopMatrix()
+
+    def pick(self, ray):
+        return ray.dist2point(self.pos) <= self.size.mean()
+
+    def lengthen(self, delta):
+        self.size += delta
+
+    def move(self, delta):
+        self.pos += delta
+
+    def rotate(self, axis, angle):
+        self.quat = quaternion_multiply(self.quat, quaternion_about_axis(angle, axis))
+
+    def sync_node(self):
+        self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.pos)
+        self.node.attrib['size'] = '{:.4f} {:.4f} {:.4f}'.format(*self.size)
+        self.node.attrib['quat'] = '{:.4f} {:.4f} {:.4f} {:.4f}'.format(*quaternion_inverse(self.quat))
+        self.node.attrib['type'] = self.type
 
 
 class Ray:

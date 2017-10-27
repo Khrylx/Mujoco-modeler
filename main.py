@@ -106,28 +106,86 @@ def reshape(width, height):
 def keyboard(key, x, y):
     key = key.decode()
     geom = skeleton.picked_geom
+    rot_angle = 10
+    trans_dist = 0.002
+    d_size = 0.002
     if key == '`':
         exit(0)
     elif key == 'v':
         skeleton.save_to_xml('data/my_humanoid.xml')
+
+    # rotate geometry
     elif key == 'a':
-        if geom is not None and geom.type == 'capsule':
-            geom.rotate(axis_y, math.radians(10))
+        if geom is not None:
+            geom.rotate(axis_y, math.radians(rot_angle))
     elif key == 'd':
-        if geom is not None and geom.type == 'capsule':
-            geom.rotate(axis_y, math.radians(-10))
+        if geom is not None:
+            geom.rotate(axis_y, math.radians(-rot_angle))
     elif key == 'w':
-        if geom is not None and geom.type == 'capsule':
-            geom.rotate(axis_x, math.radians(10))
+        if geom is not None:
+            geom.rotate(axis_x, math.radians(rot_angle))
     elif key == 's':
-        if geom is not None and geom.type == 'capsule':
-            geom.rotate(axis_x, math.radians(-10))
+        if geom is not None:
+            geom.rotate(axis_x, math.radians(-rot_angle))
     elif key == 'q':
-        if geom is not None and geom.type == 'capsule':
-            geom.rotate(axis_z, math.radians(10))
+        if geom is not None:
+            geom.rotate(axis_z, math.radians(rot_angle))
     elif key == 'e':
-        if geom is not None and geom.type == 'capsule':
-            geom.rotate(axis_z, math.radians(-10))
+        if geom is not None:
+            geom.rotate(axis_z, math.radians(-rot_angle))
+
+    # translate or change size
+    elif key == 'j':
+        if geom is not None:
+            geom.move(np.array([-trans_dist, 0, 0]))
+    elif key == 'l':
+        if geom is not None:
+            geom.move(np.array([trans_dist, 0, 0]))
+    elif key == 'i':
+        if geom is not None:
+            geom.move(np.array([0, 0, trans_dist]))
+    elif key == 'k':
+        if geom is not None:
+            geom.move(np.array([0, 0, -trans_dist]))
+    elif key == 'u':
+        if geom is not None:
+            geom.move(np.array([0, trans_dist, 0]))
+    elif key == 'o':
+        if geom is not None:
+            geom.move(np.array([0, -trans_dist, 0]))
+
+    # change size for ellipsoid
+    elif key == 'J':
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(np.array([-d_size, 0, 0]))
+    elif key == 'L':
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(np.array([d_size, 0, 0]))
+    elif key == 'I':
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(np.array([0, 0, d_size]))
+    elif key == 'K':
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(np.array([0, 0, -d_size]))
+    elif key == 'U':
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(np.array([0, d_size, 0]))
+    elif key == 'O':
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(np.array([0, -d_size, 0]))
+
+    # new geometry
+    elif key == 'r':
+        if skeleton.picked_bone is not None:
+            skeleton.picked_bone.add_geom('capsule')
+    elif key == 't':
+        if skeleton.picked_bone is not None:
+            skeleton.picked_bone.add_geom('ellipsoid')
+    # delete geometry
+    elif key == 'x':
+        if geom is not None:
+            skeleton.picked_bone.delete_geom()
+            skeleton.picked_geom = None
     glutPostRedisplay()
 
 
@@ -136,9 +194,13 @@ def special(key, x, y):
     if key == GLUT_KEY_UP:
         if geom is not None and geom.type == 'capsule':
             geom.r += 0.001
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(0.005)
     elif key == GLUT_KEY_DOWN:
         if geom is not None and geom.type == 'capsule':
-            geom.r -= 0.001
+            geom.r += 0.001
+        if geom is not None and geom.type == 'ellipsoid':
+            geom.lengthen(-0.005)
     elif key == GLUT_KEY_RIGHT:
         if geom is not None and geom.type == 'capsule':
             geom.lengthen(0.005)
