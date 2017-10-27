@@ -5,6 +5,8 @@ GUI for adjusting the geometry of Mujoco models
 Use mouse right button to select a geometry of a bone or just the bone itself when it has no geometry. Then you can rotate, translate, change the size of
 it. And you can also add new geometry to the bone or delete existing geometry. Currently it supports two types of geometry in Mujoco: **capsule** and **ellipsoid**.
 
+You can also use the script **mujoco_view.py** to view the model in Mujoco.
+
 ## keyboard shortcuts
 | Key           | Functionality |
 | ------------- | ------------- |
