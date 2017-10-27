@@ -11,7 +11,7 @@ You can also use the script **mujoco_view.py** to view the model in Mujoco.
 | Key           | Functionality |
 | ------------- | ------------- |
 | q w e a s d   | rotate the geometry |
-| u i o j k l   | engine to be used for processing templates. Handlebars is the default |
+| u i o j k l   | translate the geometry |
 | U I O J K L   | change the radius of ellipsoid (only works for ellipsoid) |
 | up down       | change the radius of the capsule (only works for capsule) |
 | left right    | change the length of the capsule (only works for capsule) |
