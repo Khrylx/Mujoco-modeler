@@ -3,7 +3,14 @@ from skeleton import Skeleton
 from renderer import Renderer
 from utils import *
 import math
+import argparse
 
+parser = argparse.ArgumentParser(description='Mujoco Modeler')
+parser.add_argument('--input', default="data/my_humanoid.xml", metavar='G',
+                    help='input path of the model')
+parser.add_argument('--output', default="data/my_humanoid.xml", metavar='G',
+                    help='output path of the model')
+args = parser.parse_args()
 
 # -----------
 # VARIABLES
@@ -112,7 +119,7 @@ def keyboard(key, x, y):
     if key == '`':
         exit(0)
     elif key == 'v':
-        skeleton.save_to_xml('data/my_humanoid.xml')
+        skeleton.save_to_xml(args.output)
 
     # rotate geometry
     elif key == 'a':
@@ -249,7 +256,7 @@ def motion(x, y):
 
 def init_skeleton():
     global skeleton
-    xml_file = "data/my_humanoid.xml"
+    xml_file = args.input
     skeleton = Skeleton(xml_file)
 
 
