@@ -17,4 +17,4 @@ it. And you can also add new geometry to the bone or delete existing geometry. C
 | t             | create a new ellipsoid for the bone |
 | d             | delete currently selected geometry |
 | v             | export modified model to xml file |
-| v             | quit the program|
+| `             | quit the program|
