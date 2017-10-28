@@ -11,6 +11,7 @@ renderer = Renderer()
 class Capsule:
 
     def __init__(self, p1, p2, r, node=None):
+        self.symm_geom = None
         self.p1 = p1
         self.p2 = p2
         self.r = r
@@ -37,6 +38,11 @@ class Capsule:
         v = normalize(self.p2 - self.p1)
         self.p2 += 0.5 * delta * v
         self.p1 -= 0.5 * delta * v
+        self.sync_symm()
+
+    def thicken(self, delta):
+        self.r += delta
+        self.sync_symm()
 
     def rotate(self, axis, angle):
         rot_mat = rotation_matrix(angle, axis)[:3, :3]
@@ -45,19 +51,30 @@ class Capsule:
         mid = (self.p1 + self.p2) * 0.5
         self.p1 = mid + e
         self.p2 = mid - e
+        self.sync_symm()
 
     def move(self, delta):
         self.p1 += delta
         self.p2 += delta
+        self.sync_symm()
 
     def sync_node(self):
         self.node.attrib['fromto'] = '{:.4f} {:.4f} {:.4f} {:.4f} {:.4f} {:.4f}'.format(*np.hstack([self.p1, self.p2]))
         self.node.attrib['size'] = '{:.4f}'.format(self.r)
         self.node.attrib['type'] = self.type
 
+    def sync_symm(self):
+        if self.symm_geom is not None:
+            self.symm_geom.p1 = self.p1.copy()
+            self.symm_geom.p2 = self.p2.copy()
+            self.symm_geom.p1[0] *= -1
+            self.symm_geom.p2[0] *= -1
+            self.symm_geom.r = self.r
+
 
 class Ellipsoid:
     def __init__(self, pos, size, quat=np.array([1, 0, 0, 0]), node=None):
+        self.symm_geom = None
         self.pos = pos
         self.size = size
         self.quat = quat

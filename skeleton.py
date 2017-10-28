@@ -10,6 +10,7 @@ class Bone:
     def __init__(self, node, parent_bone):
         self.geoms = []
         self.node = node
+        self.symm_bone = None
         self.is_picked = False
         self.picked_geom = None
         self.name = node.attrib['name']
@@ -82,6 +83,7 @@ class Skeleton:
         self.tree = parse(xml_file)
         root = self.tree.getroot().find('worldbody').find('body')
         self.add_bones(root, None)
+        self.build_symm()
 
     def save_to_xml(self, xml_file):
         for bone in self.bones:
@@ -94,6 +96,14 @@ class Skeleton:
 
         for bone_node_c in bone_node.findall('body'):
             self.add_bones(bone_node_c, bone)
+
+    def build_symm(self):
+        for bone_a in self.bones:
+            for bone_b in self.bones:
+                if bone_a != bone_b and bone_a.name[1:] == bone_b.name[1:]:
+                    bone_a.symm_bone = bone_b
+                    for i, geom in enumerate(bone_a.geoms):
+                        geom.symm_geom = bone_b.geoms[i]
 
     def render(self):
         for bone in self.bones:

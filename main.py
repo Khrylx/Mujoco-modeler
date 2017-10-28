@@ -258,11 +258,13 @@ def init_skeleton():
     global skeleton
     xml_file = args.input
     skeleton = Skeleton(xml_file)
-
+    pass
 
 # ------
 # MAIN
 # ------
+
+
 if __name__ == "__main__":
     # GLUT Window Initialization
     glutInit()
