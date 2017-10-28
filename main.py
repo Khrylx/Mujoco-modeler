@@ -205,7 +205,7 @@ def special(key, x, y):
             geom.lengthen(0.005)
     elif key == GLUT_KEY_DOWN:
         if geom is not None and geom.type == 'capsule':
-            geom.r += 0.001
+            geom.r -= 0.001
         if geom is not None and geom.type == 'ellipsoid':
             geom.lengthen(-0.005)
     elif key == GLUT_KEY_RIGHT:
