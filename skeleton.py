@@ -53,21 +53,53 @@ class Bone:
         for geom in self.geoms:
             geom.sync_node()
 
+        self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(*self.ep)
+        for j_node in self.node.findall('joint'):
+            j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
+
     def delete_geom(self):
-        node = self.picked_geom.node
-        self.node.remove(node)
+        symm_geom = self.picked_geom.symm_geom
+        self.node.remove(self.picked_geom.node)
         self.geoms.remove(self.picked_geom)
+        if self.symm_bone is not None:
+            self.symm_bone.node.remove(symm_geom.node)
+            self.symm_bone.geoms.remove(symm_geom)
         self.picked_geom = None
 
-    def add_geom(self, geom_type):
-        if geom_type == 'capsule':
+    def add_geom(self, geom_type='capsule', clone_picked=False):
+        geom = symm_geom = None
+        if clone_picked:
+            geom = self.picked_geom.clone()
+            symm_geom = self.picked_geom.clone()
+        elif geom_type == 'capsule':
             geom = Capsule(self.sp, self.ep, 0.025)
-            self.node.insert(0, geom.node)
-            self.geoms.append(geom)
+            if self.symm_bone is not None:
+                symm_geom = Capsule(self.sp, self.ep, 0.025)
         elif geom_type == 'ellipsoid':
-            geom = Ellipsoid(self.mp, np.ones(3,)*0.04)
-            self.node.insert(0, geom.node)
-            self.geoms.append(geom)
+            geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
+            if self.symm_bone is not None:
+                symm_geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
+
+        if geom is None:
+            return
+        self.node.insert(0, geom.node)
+        self.geoms.append(geom)
+        if self.symm_bone is not None:
+            self.symm_bone.node.insert(0, symm_geom.node)
+            self.symm_bone.geoms.append(symm_geom)
+            symm_geom.symm_geom = geom
+            geom.symm_geom = symm_geom
+            geom.sync_symm()
+
+    def sync_symm(self):
+        self.symm_bone.sp = self.sp.copy()
+        self.symm_bone.mp = self.mp.copy()
+        self.symm_bone.ep = self.ep.copy()
+        self.symm_bone.sp[0] *= -1
+        self.symm_bone.mp[0] *= -1
+        self.symm_bone.ep[0] *= -1
+        for geom in self.geoms:
+            geom.sync_symm()
 
 
 class Skeleton:
@@ -84,6 +116,7 @@ class Skeleton:
         root = self.tree.getroot().find('worldbody').find('body')
         self.add_bones(root, None)
         self.build_symm()
+        self.make_symm()
 
     def save_to_xml(self, xml_file):
         for bone in self.bones:
@@ -104,6 +137,11 @@ class Skeleton:
                     bone_a.symm_bone = bone_b
                     for i, geom in enumerate(bone_a.geoms):
                         geom.symm_geom = bone_b.geoms[i]
+
+    def make_symm(self):
+        for i, bone in enumerate(self.bones):
+            if bone.symm_bone is not None and self.bones.index(bone.symm_bone) > i:
+                bone.sync_symm()
 
     def render(self):
         for bone in self.bones:

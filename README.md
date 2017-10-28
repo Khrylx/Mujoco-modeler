@@ -17,6 +17,8 @@ You can also use the script **mujoco_view.py** to view the model in Mujoco.
 | left right    | change the length of the capsule (only works for capsule) |
 | r             | create a new capsule for the bone |
 | t             | create a new ellipsoid for the bone |
+| c             | clone currently selected geometry |
 | d             | delete currently selected geometry |
 | v             | export modified model to xml file |
 | `             | quit the program|
+

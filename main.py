@@ -193,6 +193,9 @@ def keyboard(key, x, y):
         if geom is not None:
             skeleton.picked_bone.delete_geom()
             skeleton.picked_geom = None
+    elif key == 'c':
+        if skeleton.picked_bone is not None and skeleton.picked_geom is not None:
+            skeleton.picked_bone.add_geom(clone_picked=True)
     glutPostRedisplay()
 
 
@@ -200,12 +203,12 @@ def special(key, x, y):
     geom = skeleton.picked_geom
     if key == GLUT_KEY_UP:
         if geom is not None and geom.type == 'capsule':
-            geom.r += 0.001
+            geom.thicken(0.001)
         if geom is not None and geom.type == 'ellipsoid':
             geom.lengthen(0.005)
     elif key == GLUT_KEY_DOWN:
         if geom is not None and geom.type == 'capsule':
-            geom.r -= 0.001
+            geom.thicken(-0.001)
         if geom is not None and geom.type == 'ellipsoid':
             geom.lengthen(-0.005)
     elif key == GLUT_KEY_RIGHT:
