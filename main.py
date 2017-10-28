@@ -193,9 +193,16 @@ def keyboard(key, x, y):
         if geom is not None:
             skeleton.picked_bone.delete_geom()
             skeleton.picked_geom = None
+    # clone geometry
     elif key == 'c':
         if skeleton.picked_bone is not None and skeleton.picked_geom is not None:
             skeleton.picked_bone.add_geom(clone_picked=True)
+    elif key == 'z':
+        if skeleton.picked_bone:
+            skeleton.picked_bone.is_picked = False
+        skeleton.picked_bone = skeleton.bones[0]
+        if skeleton.picked_bone.geoms:
+            skeleton.picked_geom = skeleton.picked_bone.picked_geom = skeleton.picked_bone.geoms[0]
     glutPostRedisplay()
 
 

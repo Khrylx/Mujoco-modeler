@@ -72,9 +72,13 @@ class Bone:
             geom = self.picked_geom.clone()
             symm_geom = self.picked_geom.clone()
         elif geom_type == 'capsule':
-            geom = Capsule(self.sp, self.ep, 0.025)
+            p1 = self.mp.copy()
+            p2 = self.mp.copy()
+            p1[0] -= 0.03
+            p2[0] += 0.03
+            geom = Capsule(p1, p2, 0.025)
             if self.symm_bone is not None:
-                symm_geom = Capsule(self.sp, self.ep, 0.025)
+                symm_geom = Capsule(p1, p2, 0.025)
         elif geom_type == 'ellipsoid':
             geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
             if self.symm_bone is not None:
