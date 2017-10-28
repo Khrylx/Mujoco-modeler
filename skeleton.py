@@ -28,15 +28,20 @@ class Bone:
             elif geom_type == 'ellipsoid':
                 self.geoms.append(Ellipsoid.from_node(geom_node))
 
-    def render(self):
-        color = [1.0, 0.0, 0.0] if self.is_picked else [0.8, 0.8, 0.8]
-        glColor3d(*color)
-        renderer.render_point(self.ep, 0.022)
-        renderer.render_capsule(self.sp, self.ep, 0.02)
-        for geom in self.geoms:
-            color = [0.0, 1.0, 0.0] if geom == self.picked_geom else [1.0, 0.65, 0.0]
+    def __str__(self):
+        return self.name
+
+    def render(self, render_options):
+        if render_options['render_bone']:
+            color = [1.0, 0.0, 0.0] if self.is_picked else [0.8, 0.8, 0.8]
             glColor3d(*color)
-            geom.render()
+            renderer.render_point(self.ep, 0.022)
+            renderer.render_capsule(self.sp, self.ep, 0.02)
+        if render_options['render_geom']:
+            for geom in self.geoms:
+                color = [0.0, 1.0, 0.0] if geom == self.picked_geom else [1.0, 0.65, 0.0]
+                glColor3d(*color)
+                geom.render()
 
     def pick(self, ray):
         for geom in self.geoms:
@@ -66,16 +71,20 @@ class Bone:
             self.symm_bone.geoms.remove(symm_geom)
         self.picked_geom = None
 
-    def add_geom(self, geom_type='capsule', clone_picked=False):
+    def add_geom(self, geom_type='capsule', bone_capsule=False, clone_picked=False):
         geom = symm_geom = None
         if clone_picked:
             geom = self.picked_geom.clone()
             symm_geom = self.picked_geom.clone()
         elif geom_type == 'capsule':
-            p1 = self.mp.copy()
-            p2 = self.mp.copy()
-            p1[0] -= 0.03
-            p2[0] += 0.03
+            if bone_capsule:
+                p1 = self.sp.copy()
+                p2 = self.ep.copy()
+            else:
+                p1 = self.mp.copy()
+                p2 = self.mp.copy()
+                p1[0] -= 0.03
+                p2[0] += 0.03
             geom = Capsule(p1, p2, 0.025)
             if self.symm_bone is not None:
                 symm_geom = Capsule(p1, p2, 0.025)
@@ -94,6 +103,7 @@ class Bone:
             symm_geom.symm_geom = geom
             geom.symm_geom = symm_geom
             geom.sync_symm()
+        self.picked_geom = geom
 
     def sync_symm(self):
         self.symm_bone.sp = self.sp.copy()
@@ -147,9 +157,9 @@ class Skeleton:
             if bone.symm_bone is not None and self.bones.index(bone.symm_bone) > i:
                 bone.sync_symm()
 
-    def render(self):
+    def render(self, render_options):
         for bone in self.bones:
-            bone.render()
+            bone.render(render_options)
 
     def pick_geom(self, ray):
         self.picked_geom = None

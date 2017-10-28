@@ -16,9 +16,13 @@ You can also use the script **mujoco_view.py** to view the model in Mujoco.
 | up down       | change the radius of the capsule (only works for capsule) |
 | left right    | change the length of the capsule (only works for capsule) |
 | r             | create a new capsule for the bone |
+| f     		| create a new capsule from the bone|
 | t             | create a new ellipsoid for the bone |
 | c             | clone currently selected geometry |
 | d             | delete currently selected geometry |
+| z				| select the root bone	|
 | v             | export modified model to xml file |
 | `             | quit the program|
+|1				| toggle render skeleton|
+|2				| toggle render geometry|
 

@@ -44,13 +44,15 @@ axis_z = np.array([0.0, 0.0, 1.0])
 skeleton = None
 renderer = Renderer()
 
+render_options = {'render_bone': True, 'render_geom': True}
+
 # -------------------
 # SCENE CONSTRUCTOR
 # -------------------
 
 
 def draw_scene():
-    skeleton.render()
+    skeleton.render(render_options)
     glColor3d(1, 0, 0)
 
 # --------
@@ -120,6 +122,7 @@ def keyboard(key, x, y):
         exit(0)
     elif key == 'v':
         skeleton.save_to_xml(args.output)
+        print('model saved to {}'.format(args.output))
 
     # rotate geometry
     elif key == 'a':
@@ -185,6 +188,9 @@ def keyboard(key, x, y):
     elif key == 'r':
         if skeleton.picked_bone is not None:
             skeleton.picked_bone.add_geom('capsule')
+    elif key == 'f':
+        if skeleton.picked_bone is not None:
+            skeleton.picked_bone.add_geom('capsule', bone_capsule=True)
     elif key == 't':
         if skeleton.picked_bone is not None:
             skeleton.picked_bone.add_geom('ellipsoid')
@@ -203,6 +209,11 @@ def keyboard(key, x, y):
         skeleton.picked_bone = skeleton.bones[0]
         if skeleton.picked_bone.geoms:
             skeleton.picked_geom = skeleton.picked_bone.picked_geom = skeleton.picked_bone.geoms[0]
+    # render options
+    elif key == '1':
+        render_options['render_bone'] = not render_options['render_bone']
+    elif key == '2':
+        render_options['render_geom'] = not render_options['render_geom']
     glutPostRedisplay()
 
 
@@ -237,6 +248,8 @@ def mouse(button, state, x, y):
         if button == GLUT_RIGHT_BUTTON:
             mouse_ray = get_ray_from_screen(x, y)
             skeleton.pick_geom(mouse_ray)
+            if skeleton.picked_bone is not None:
+                print(skeleton.picked_bone)
             glutPostRedisplay()
 
 
