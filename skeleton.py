@@ -59,6 +59,7 @@ class Bone:
             geom.sync_node()
 
         self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(*self.ep)
+        self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
         for j_node in self.node.findall('joint'):
             j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
 
