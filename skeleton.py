@@ -62,6 +62,8 @@ class Bone:
         self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
         for j_node in self.node.findall('joint'):
             j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
+            j_node.attrib['armature'] = '0.1' if self.name != 'root' else '0.0'
+
 
     def delete_geom(self):
         symm_geom = self.picked_geom.symm_geom
