@@ -1,4 +1,4 @@
-from lxml.etree import parse, ElementTree, Element, SubElement
+from lxml.etree import XMLParser, parse, ElementTree, Element, SubElement
 from OpenGL.GL import *
 from geometry import Capsule, Ellipsoid, renderer
 from utils import *
@@ -62,8 +62,10 @@ class Bone:
         self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
         for j_node in self.node.findall('joint'):
             j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
-            j_node.attrib['armature'] = '0.1' if self.name != 'root' else '0.0'
-
+            if self.name != 'root':
+                j_node.attrib['armature'] = '0.005'
+                j_node.attrib['stiffness'] = '0.1'
+                j_node.attrib['damping'] = '1.0'
 
     def delete_geom(self):
         symm_geom = self.picked_geom.symm_geom
@@ -129,7 +131,8 @@ class Skeleton:
         self.load_from_xml(xml_file)
 
     def load_from_xml(self, xml_file):
-        self.tree = parse(xml_file)
+        parser = XMLParser(remove_blank_text=True)
+        self.tree = parse(xml_file, parser=parser)
         root = self.tree.getroot().find('worldbody').find('body')
         self.add_bones(root, None)
         self.build_symm()
