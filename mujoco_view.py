@@ -2,7 +2,7 @@ from mujoco_py import load_model_from_path, MjSim, MjViewer
 import argparse
 
 parser = argparse.ArgumentParser(description='Mujoco Modeler')
-parser.add_argument('--input', default="data/my_humanoid.xml", metavar='G',
+parser.add_argument('--input', default="data/humanoid.xml", metavar='G',
                     help='input path of the model')
 args = parser.parse_args()
 

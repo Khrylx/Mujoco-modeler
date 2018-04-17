@@ -1,6 +1,6 @@
 from lxml.etree import XMLParser, parse, ElementTree, Element, SubElement
 from OpenGL.GL import *
-from geometry import Capsule, Ellipsoid, renderer
+from geometry import Capsule, Ellipsoid, Box, renderer
 from utils import *
 import numpy as np
 
@@ -27,6 +27,9 @@ class Bone:
                 self.geoms.append(Capsule.from_node(geom_node))
             elif geom_type == 'ellipsoid':
                 self.geoms.append(Ellipsoid.from_node(geom_node))
+            elif geom_type == 'box':
+                self.geoms.append(Box.from_node(geom_node))
+                print(self.geoms[-1].size)
 
     def __str__(self):
         return self.name
@@ -58,14 +61,14 @@ class Bone:
         for geom in self.geoms:
             geom.sync_node()
 
-        self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(*self.ep)
-        self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
-        for j_node in self.node.findall('joint'):
-            j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
-            if self.name != 'root':
-                j_node.attrib['armature'] = '0.005'
-                j_node.attrib['stiffness'] = '0.1'
-                j_node.attrib['damping'] = '1.0'
+        # self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(*self.ep)
+        # self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
+        # for j_node in self.node.findall('joint'):
+        #     j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
+        #     if self.name != 'root':
+        #         j_node.attrib['armature'] = '0.01'
+        #         j_node.attrib['stiffness'] = '1.0'
+        #         j_node.attrib['damping'] = '5.0'
 
     def delete_geom(self):
         symm_geom = self.picked_geom.symm_geom
@@ -97,6 +100,10 @@ class Bone:
             geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
             if self.symm_bone is not None:
                 symm_geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
+        elif geom_type == 'box':
+            geom = Box(self.mp, np.ones(3, ) * 0.04)
+            if self.symm_bone is not None:
+                symm_geom = Box(self.mp, np.ones(3, ) * 0.04)
 
         if geom is None:
             return

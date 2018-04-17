@@ -62,6 +62,13 @@ class Renderer(object):
         glutSolidSphere(1.0, 32, 16)
         glPopMatrix()
 
+    def render_cube(self, pos, size):
+        glPushMatrix()
+        glTranslated(pos[0], pos[1], pos[2])
+        glScaled(size, size, size)
+        glutSolidCube(1.0)
+        glPopMatrix()
+
     def render_capsule(self, bottom, top, radius):
         self.render_cylinder(bottom, top, radius)
         self.render_point(bottom, radius)

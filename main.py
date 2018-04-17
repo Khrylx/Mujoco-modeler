@@ -6,9 +6,9 @@ import math
 import argparse
 
 parser = argparse.ArgumentParser(description='Mujoco Modeler')
-parser.add_argument('--input', default="data/my_humanoid.xml", metavar='G',
+parser.add_argument('--input', default="data/humanoid.xml", metavar='G',
                     help='input path of the model')
-parser.add_argument('--output', default="data/my_humanoid.xml", metavar='G',
+parser.add_argument('--output', default="data/humanoid.xml", metavar='G',
                     help='output path of the model')
 args = parser.parse_args()
 
@@ -164,24 +164,24 @@ def keyboard(key, x, y):
         if geom is not None:
             geom.move(np.array([0, -trans_dist, 0]))
 
-    # change size for ellipsoid
+    # change size for box
     elif key == 'J':
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(np.array([-d_size, 0, 0]))
     elif key == 'L':
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(np.array([d_size, 0, 0]))
     elif key == 'I':
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(np.array([0, 0, d_size]))
     elif key == 'K':
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(np.array([0, 0, -d_size]))
     elif key == 'U':
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(np.array([0, d_size, 0]))
     elif key == 'O':
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(np.array([0, -d_size, 0]))
 
     # new geometry
@@ -193,7 +193,7 @@ def keyboard(key, x, y):
             skeleton.picked_bone.add_geom('capsule', bone_capsule=True)
     elif key == 't':
         if skeleton.picked_bone is not None:
-            skeleton.picked_bone.add_geom('ellipsoid')
+            skeleton.picked_bone.add_geom('box')
     # delete geometry
     elif key == 'x':
         if geom is not None:
@@ -222,12 +222,12 @@ def special(key, x, y):
     if key == GLUT_KEY_UP:
         if geom is not None and geom.type == 'capsule':
             geom.thicken(0.001)
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(0.005)
     elif key == GLUT_KEY_DOWN:
         if geom is not None and geom.type == 'capsule':
             geom.thicken(-0.001)
-        if geom is not None and geom.type == 'ellipsoid':
+        if geom is not None and geom.type == 'box':
             geom.lengthen(-0.005)
     elif key == GLUT_KEY_RIGHT:
         if geom is not None and geom.type == 'capsule':

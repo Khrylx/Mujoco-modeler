@@ -142,6 +142,72 @@ class Ellipsoid:
             self.symm_geom.quat = quaternion_from_euler(ax, -ay, -az)
 
 
+class Box:
+    def __init__(self, pos, size, quat=np.array([1, 0, 0, 0]), node=None):
+        self.symm_geom = None
+        self.pos = pos.copy()
+        self.size = size.copy()
+        self.quat = quat.copy()
+        self.type = 'box'
+        if node is None:
+            self.node = Element('geom')
+            self.sync_node()
+        else:
+            self.node = node
+
+    def clone(self):
+        return Box(self.pos, self.size, self.quat)
+
+    @classmethod
+    def from_node(cls, node):
+        pos = np.fromstring(node.attrib['pos'], sep=' ')
+        size = np.fromstring(node.attrib['size'], sep=' ')
+        if 'quat' in node.attrib:
+            quat = np.fromstring(node.attrib['quat'], sep=' ')
+            quat = quaternion_inverse(quat)
+        else:
+            quat = np.array([1, 0, 0, 0])
+        geom = cls(pos, size, quat, node)
+        return geom
+
+    def render(self):
+        glPushMatrix()
+        glTranslated(*self.pos)
+        glMultMatrixd(quaternion_matrix(self.quat))
+        glScaled(*self.size*2)
+        renderer.render_cube(np.zeros(3,), 1)
+        glPopMatrix()
+
+    def pick(self, ray):
+        return ray.dist2point(self.pos) <= self.size.mean()
+
+    def lengthen(self, delta):
+        self.size += delta
+        self.sync_symm()
+
+    def move(self, delta):
+        self.pos += delta
+        self.sync_symm()
+
+    def rotate(self, axis, angle):
+        self.quat = quaternion_multiply(self.quat, quaternion_about_axis(angle, axis))
+        self.sync_symm()
+
+    def sync_node(self):
+        self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.pos)
+        self.node.attrib['size'] = '{:.4f} {:.4f} {:.4f}'.format(*self.size)
+        self.node.attrib['quat'] = '{:.4f} {:.4f} {:.4f} {:.4f}'.format(*quaternion_inverse(self.quat))
+        self.node.attrib['type'] = self.type
+
+    def sync_symm(self):
+        if self.symm_geom is not None:
+            self.symm_geom.pos = self.pos.copy()
+            self.symm_geom.size = self.size.copy()
+            self.symm_geom.pos[0] *= -1
+            ax, ay, az = euler_from_quaternion(self.quat)
+            self.symm_geom.quat = quaternion_from_euler(ax, -ay, -az)
+
+
 class Ray:
 
     def __init__(self, origin, direction):
