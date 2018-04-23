@@ -13,6 +13,7 @@ class Bone:
         self.symm_bone = None
         self.is_picked = False
         self.picked_geom = None
+        self.parent = parent_bone
         self.name = node.attrib['name']
         self.ep = np.fromstring(node.attrib['user'], sep=' ')
         if parent_bone is not None:
@@ -29,7 +30,7 @@ class Bone:
                 self.geoms.append(Ellipsoid.from_node(geom_node))
             elif geom_type == 'box':
                 self.geoms.append(Box.from_node(geom_node))
-                print(self.geoms[-1].size)
+            self.geoms[-1].bone = self
 
     def __str__(self):
         return self.name
@@ -57,9 +58,15 @@ class Bone:
             self.is_picked = True
         return None
 
-    def sync_node(self):
+    def sync_node(self, local_coord):
         for geom in self.geoms:
-            geom.sync_node()
+            geom.sync_node(local_coord)
+
+        if local_coord and self.name != 'root':
+            self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*(self.sp - self.parent.sp))
+            self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(0, 0, 0)
+            for j_node in self.node.findall('joint'):
+                j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(0, 0, 0)
 
         # self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(*self.ep)
         # self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
@@ -145,9 +152,9 @@ class Skeleton:
         self.build_symm()
         self.make_symm()
 
-    def save_to_xml(self, xml_file):
+    def save_to_xml(self, xml_file, local_coord=False):
         for bone in self.bones:
-            bone.sync_node()
+            bone.sync_node(local_coord)
         self.tree.write(xml_file, pretty_print=True)
 
     def add_bones(self, bone_node, parent_bone):

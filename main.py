@@ -8,7 +8,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Mujoco Modeler')
 parser.add_argument('--input', default="data/humanoid.xml", metavar='G',
                     help='input path of the model')
-parser.add_argument('--output', default="data/humanoid.xml", metavar='G',
+parser.add_argument('--output', default="data/humanoid_out.xml", metavar='G',
                     help='output path of the model')
 args = parser.parse_args()
 
@@ -121,7 +121,7 @@ def keyboard(key, x, y):
     if key == '`':
         exit(0)
     elif key == 'v':
-        skeleton.save_to_xml(args.output)
+        skeleton.save_to_xml(args.output, False)
         print('model saved to {}'.format(args.output))
 
     # rotate geometry

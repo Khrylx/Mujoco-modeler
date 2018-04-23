@@ -17,9 +17,10 @@ class Capsule:
         self.p2 = p2.copy()
         self.r = r
         self.type = 'capsule'
+        self.bone = None
         if node is None:
             self.node = Element('geom')
-            self.sync_node()
+            self.sync_node(False)
         else:
             self.node = node
 
@@ -62,8 +63,10 @@ class Capsule:
         self.p2 += delta
         self.sync_symm()
 
-    def sync_node(self):
-        self.node.attrib['fromto'] = '{:.4f} {:.4f} {:.4f} {:.4f} {:.4f} {:.4f}'.format(*np.hstack([self.p1, self.p2]))
+    def sync_node(self, local_coord):
+        p1 = self.p1 - self.bone.sp if local_coord else self.p1
+        p2 = self.p2 - self.bone.sp if local_coord else self.p2
+        self.node.attrib['fromto'] = '{:.4f} {:.4f} {:.4f} {:.4f} {:.4f} {:.4f}'.format(*np.hstack([p1, p2]))
         self.node.attrib['size'] = '{:.4f}'.format(self.r)
         self.node.attrib['type'] = self.type
 
@@ -83,9 +86,10 @@ class Ellipsoid:
         self.size = size.copy()
         self.quat = quat.copy()
         self.type = 'ellipsoid'
+        self.bone = None
         if node is None:
             self.node = Element('geom')
-            self.sync_node()
+            self.sync_node(False)
         else:
             self.node = node
 
@@ -127,7 +131,8 @@ class Ellipsoid:
         self.quat = quaternion_multiply(self.quat, quaternion_about_axis(angle, axis))
         self.sync_symm()
 
-    def sync_node(self):
+    def sync_node(self, local_coord):
+        pos = self.pos - self.bone.sp if local_coord else self.pos
         self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.pos)
         self.node.attrib['size'] = '{:.4f} {:.4f} {:.4f}'.format(*self.size)
         self.node.attrib['quat'] = '{:.4f} {:.4f} {:.4f} {:.4f}'.format(*quaternion_inverse(self.quat))
@@ -149,9 +154,10 @@ class Box:
         self.size = size.copy()
         self.quat = quat.copy()
         self.type = 'box'
+        self.bone = None
         if node is None:
             self.node = Element('geom')
-            self.sync_node()
+            self.sync_node(False)
         else:
             self.node = node
 
@@ -193,8 +199,9 @@ class Box:
         self.quat = quaternion_multiply(self.quat, quaternion_about_axis(angle, axis))
         self.sync_symm()
 
-    def sync_node(self):
-        self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.pos)
+    def sync_node(self, local_coord):
+        pos = self.pos - self.bone.sp if local_coord else self.pos
+        self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*pos)
         self.node.attrib['size'] = '{:.4f} {:.4f} {:.4f}'.format(*self.size)
         self.node.attrib['quat'] = '{:.4f} {:.4f} {:.4f} {:.4f}'.format(*quaternion_inverse(self.quat))
         self.node.attrib['type'] = self.type
