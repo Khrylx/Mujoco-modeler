@@ -6,7 +6,7 @@ import math
 import argparse
 
 parser = argparse.ArgumentParser(description='Mujoco Modeler')
-parser.add_argument('--input', default="data/humanoid.xml", metavar='G',
+parser.add_argument('--input', default="data/humanoid_out.xml", metavar='G',
                     help='input path of the model')
 parser.add_argument('--output', default="data/humanoid_out.xml", metavar='G',
                     help='output path of the model')
@@ -187,13 +187,13 @@ def keyboard(key, x, y):
     # new geometry
     elif key == 'r':
         if skeleton.picked_bone is not None:
-            skeleton.picked_bone.add_geom('capsule')
+            skeleton.picked_geom = skeleton.picked_bone.add_geom('capsule')
     elif key == 'f':
         if skeleton.picked_bone is not None:
-            skeleton.picked_bone.add_geom('capsule', bone_capsule=True)
+            skeleton.picked_geom = skeleton.picked_bone.add_geom('capsule', bone_capsule=True)
     elif key == 't':
         if skeleton.picked_bone is not None:
-            skeleton.picked_bone.add_geom('box')
+            skeleton.picked_geom = skeleton.picked_bone.add_geom('box')
     # delete geometry
     elif key == 'x':
         if geom is not None:
@@ -209,6 +209,18 @@ def keyboard(key, x, y):
         skeleton.picked_bone = skeleton.bones[0]
         if skeleton.picked_bone.geoms:
             skeleton.picked_geom = skeleton.picked_bone.picked_geom = skeleton.picked_bone.geoms[0]
+    elif key == 'n':
+        if skeleton.picked_bone and len(skeleton.picked_bone.child) > 0:
+            pb = skeleton.picked_bone
+            pb.picked_geom = None
+            pb.is_picked = False
+            cb = pb.child[0]
+            cb.is_picked = True
+            skeleton.picked_bone = cb
+            if len(cb.geoms) > 0:
+                cb.picked_geom = cb.geoms[0]
+                skeleton.picked_geom = cb.geoms[0]
+                cb.geoms[0].is_picked = True
     # render options
     elif key == '1':
         render_options['render_bone'] = not render_options['render_bone']
@@ -278,9 +290,11 @@ def motion(x, y):
 
 
 def init_skeleton():
+    global center_x, center_y, center_z
     global skeleton
     xml_file = args.input
     skeleton = Skeleton(xml_file)
+    center_x, center_y, center_z = skeleton.bones[0].sp.tolist()
     pass
 
 # ------

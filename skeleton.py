@@ -9,14 +9,19 @@ class Bone:
 
     def __init__(self, node, parent_bone):
         self.geoms = []
+        self.child = []
         self.node = node
         self.symm_bone = None
         self.is_picked = False
         self.picked_geom = None
         self.parent = parent_bone
+        if parent_bone is not None:
+            parent_bone.child.append(self)
         self.name = node.attrib['name']
         self.ep = np.fromstring(node.attrib['user'], sep=' ')
-        if parent_bone is not None:
+        if 'pos' in node.attrib:
+            self.sp = np.fromstring(node.attrib['pos'], sep=' ')
+        elif parent_bone is not None:
             self.sp = parent_bone.ep.copy()
         else:
             self.sp = self.ep.copy()
@@ -62,11 +67,16 @@ class Bone:
         for geom in self.geoms:
             geom.sync_node(local_coord)
 
-        if local_coord and self.name != 'root':
+        if self.name == 'root':
+            return
+
+        if local_coord:
             self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*(self.sp - self.parent.sp))
             self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(0, 0, 0)
             for j_node in self.node.findall('joint'):
                 j_node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(0, 0, 0)
+        else:
+            self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.sp)
 
         # self.node.attrib['user'] = '{:.4f} {:.4f} {:.4f}'.format(*self.ep)
         # self.node.attrib['pos'] = '{:.4f} {:.4f} {:.4f}'.format(*self.mp)
@@ -123,6 +133,7 @@ class Bone:
             geom.symm_geom = symm_geom
             geom.sync_symm()
         self.picked_geom = geom
+        return geom
 
     def sync_symm(self):
         self.symm_bone.sp = self.sp.copy()
@@ -167,7 +178,9 @@ class Skeleton:
     def build_symm(self):
         for bone_a in self.bones:
             for bone_b in self.bones:
-                if bone_a != bone_b and bone_a.name[1:] == bone_b.name[1:]:
+                bone_b_negsp = bone_b.sp.copy()
+                bone_b_negsp[0] *= -1
+                if bone_a != bone_b and np.linalg.norm(bone_a.sp - bone_b_negsp) < 1e-4:
                     bone_a.symm_bone = bone_b
                     for i, geom in enumerate(bone_a.geoms):
                         geom.symm_geom = bone_b.geoms[i]
