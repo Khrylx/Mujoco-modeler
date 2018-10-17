@@ -10,6 +10,7 @@ parser.add_argument('--input', default="data/humanoid_out.xml", metavar='G',
                     help='input path of the model')
 parser.add_argument('--output', default="data/humanoid_out.xml", metavar='G',
                     help='output path of the model')
+parser.add_argument('--local', action='store_true', default=False)
 args = parser.parse_args()
 
 # -----------
@@ -121,7 +122,7 @@ def keyboard(key, x, y):
     if key == '`':
         exit(0)
     elif key == 'v':
-        skeleton.save_to_xml(args.output, False)
+        skeleton.save_to_xml(args.output, args.local)
         print('model saved to {}'.format(args.output))
 
     # rotate geometry
