@@ -194,6 +194,9 @@ def keyboard(key, x, y):
     elif key == 't':
         if skeleton.picked_bone is not None:
             skeleton.picked_geom = skeleton.picked_bone.add_geom('box')
+    elif key == 'g':
+        if skeleton.picked_bone is not None:
+            skeleton.picked_geom = skeleton.picked_bone.add_geom('sphere')
     # delete geometry
     elif key == 'x':
         if geom is not None:
@@ -234,12 +237,12 @@ def special(key, x, y):
     if key == GLUT_KEY_UP:
         if geom is not None and geom.type == 'capsule':
             geom.thicken(0.001)
-        if geom is not None and geom.type == 'box':
+        if geom is not None and geom.type in {'box', 'sphere'}:
             geom.lengthen(0.005)
     elif key == GLUT_KEY_DOWN:
         if geom is not None and geom.type == 'capsule':
             geom.thicken(-0.001)
-        if geom is not None and geom.type == 'box':
+        if geom is not None and geom.type in {'box', 'sphere'}:
             geom.lengthen(-0.005)
     elif key == GLUT_KEY_RIGHT:
         if geom is not None and geom.type == 'capsule':

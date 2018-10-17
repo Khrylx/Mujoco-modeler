@@ -1,6 +1,6 @@
 from lxml.etree import XMLParser, parse, ElementTree, Element, SubElement
 from OpenGL.GL import *
-from geometry import Capsule, Ellipsoid, Box, renderer
+from geometry import Capsule, Sphere, Box, renderer
 from utils import *
 import numpy as np
 
@@ -31,8 +31,8 @@ class Bone:
             geom_type = geom_node.attrib['type']
             if geom_type == 'capsule':
                 self.geoms.append(Capsule.from_node(geom_node))
-            elif geom_type == 'ellipsoid':
-                self.geoms.append(Ellipsoid.from_node(geom_node))
+            elif geom_type == 'sphere':
+                self.geoms.append(Sphere.from_node(geom_node))
             elif geom_type == 'box':
                 self.geoms.append(Box.from_node(geom_node))
             self.geoms[-1].bone = self
@@ -113,10 +113,10 @@ class Bone:
             geom = Capsule(p1, p2, 0.025)
             if self.symm_bone is not None:
                 symm_geom = Capsule(p1, p2, 0.025)
-        elif geom_type == 'ellipsoid':
-            geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
+        elif geom_type == 'sphere':
+            geom = Sphere(self.sp, 0.04)
             if self.symm_bone is not None:
-                symm_geom = Ellipsoid(self.mp, np.ones(3, ) * 0.04)
+                symm_geom = Sphere(self.sp, 0.04)
         elif geom_type == 'box':
             geom = Box(self.mp, np.ones(3, ) * 0.04)
             if self.symm_bone is not None:
@@ -178,9 +178,12 @@ class Skeleton:
     def build_symm(self):
         for bone_a in self.bones:
             for bone_b in self.bones:
-                bone_b_negsp = bone_b.sp.copy()
-                bone_b_negsp[0] *= -1
-                if bone_a != bone_b and np.linalg.norm(bone_a.sp - bone_b_negsp) < 1e-4:
+                if bone_a.name == 'root' or bone_b.name == 'root' \
+                        or bone_a.name[1:] == 'hipjoint' or bone_b.name[1:] == 'hipjoint':
+                    continue
+                bone_b_negep = bone_b.ep.copy()
+                bone_b_negep[0] *= -1
+                if bone_a != bone_b and np.linalg.norm(bone_a.ep - bone_b_negep) < 1e-4:
                     bone_a.symm_bone = bone_b
                     for i, geom in enumerate(bone_a.geoms):
                         geom.symm_geom = bone_b.geoms[i]
