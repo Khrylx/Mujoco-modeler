@@ -160,7 +160,7 @@ class Skeleton:
         self.tree = parse(xml_file, parser=parser)
         root = self.tree.getroot().find('worldbody').find('body')
         self.add_bones(root, None)
-        self.build_symm()
+        self.build_symm_by_name()
         self.make_symm()
 
     def save_to_xml(self, xml_file, local_coord=False):
@@ -174,6 +174,19 @@ class Skeleton:
 
         for bone_node_c in bone_node.findall('body'):
             self.add_bones(bone_node_c, bone)
+
+    def build_symm_by_name(self):
+        for bone in self.bones:
+            if 'Left' in bone.name:
+                symm_bone_name = bone.name.replace('Left', 'Right')
+                for symm_bone in self.bones:
+                    if symm_bone.name == symm_bone_name:
+                        break
+                bone.symm_bone = symm_bone
+                symm_bone.symm_bone = bone
+                for i, geom in enumerate(bone.geoms):
+                    geom.symm_geom = symm_bone.geoms[i]
+                    symm_bone.geoms[i].symm_geom = geom
 
     def build_symm(self):
         for bone_a in self.bones:

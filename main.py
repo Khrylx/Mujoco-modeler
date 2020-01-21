@@ -116,7 +116,7 @@ def reshape(width, height):
 def keyboard(key, x, y):
     key = key.decode()
     geom = skeleton.picked_geom
-    rot_angle = 10
+    rot_angle = 5
     trans_dist = 0.002
     d_size = 0.002
     if key == '`':
